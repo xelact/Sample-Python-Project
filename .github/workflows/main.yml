@@ -1,0 +1,27 @@
+name: main
+
+on:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          # Semantic version range syntax or exact version of a Python version
+          python-version: "3.11"
+          # Optional - x64 or x86 architecture, defaults to x64
+          architecture: "x64"
+      - name: Install poetry
+        run: |
+          curl -sSL https://install.python-poetry.org | python3 -
+      - name: Install dependencies
+        run: poetry install
+      - name: Run pylint
+        run: poetry run pylint sample_python_project tests
+      - name: Run pytest
+        run: poetry run pytest
